@@ -1,4 +1,6 @@
 from modelos.avaliacao import Avaliacao
+from modelos.cardapio.item_cardapio import ItemCardapio
+
 
 class Restaurante:
     restaurantes = []
@@ -8,6 +10,7 @@ class Restaurante:
         self._categoria = categoria.upper()  #upper para deixar a letra maiuscula 
         self._ativo = False   #O _ serve para deixar o atributro protegido
         self._avaliacao = []    #gera lista para armazenar as avaliações
+        self._cardapio = []
         Restaurante.restaurantes.append(self)
 
     def __str__ (self):
@@ -40,4 +43,22 @@ class Restaurante:
         media = round(soma_das_notas/quantidade_de_notas, 1) #round arredonda o resultado para ter apenas uma cada decimal (o 1 referencia 1 casa decimal)
         return media
 
+#   def adicionar_bebida_cardapio(self, bebida):
+#      self._cardapio.append(bebida)
 
+#   def adicionar_prato_cardapio(self, prato):
+#       self._cardapio.append(prato)
+    def adicionar_no_cardapio(self,item):
+        if isinstance(item,ItemCardapio): #verifica se é instancia, se bate com as exigências de ItemCardapio
+            self._cardapio.append(item)
+
+    @property
+    def exibir_cardapio(self):
+        print(f'Cardápio Restaurante {self._nome}\n')
+        for i, item in enumerate(self._cardapio,start = 1): #para cada item que possa ser numerado em cardapio , começar do 1
+            if hasattr(item, 'descricao'): #se o item possui o atributo descrição (acrescentar as outas variaveis descr e tamanho)
+                mensagem_prato = f'{i}. Nome: {item._nome} | Preço: R${item._preco} | Descrição: {item.descricao}'
+                print(mensagem_prato)
+            else:
+                mensagem_bebida = f'{i}. Nome: {item._nome} | Preço: R${item._preco} | Tamanho: {item.tamanho}'
+                print(mensagem_bebida)
